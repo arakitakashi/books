@@ -16,6 +16,9 @@ jobs:
           distribution: 'corretto'
           java-version: '17'
 
+      - name: Print current directory
+        run: pwd
+
       - name: Build with maven
         run: mvn -B package -Dmaven.test.skip=true
 
