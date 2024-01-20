@@ -16,9 +16,6 @@ jobs:
           distribution: 'corretto'
           java-version: '17'
 
-      - name: Print current directory
-        run: pwd
-
       - name: Build with maven
         run: mvn -B package -Dmaven.test.skip=true
 
@@ -26,7 +23,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: spring-boot-app
-          path: books/target/*.jar
+          path: target/*.jar
 
   deploy:
     runs-on: ubuntu-latest
