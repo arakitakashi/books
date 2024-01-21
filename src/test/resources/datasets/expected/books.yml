@@ -1,0 +1,21 @@
+books:
+  - id: 1  # 仮のID、テストによって異なる可能性があります
+    title: "テスト駆動開発"
+    author: "Kent Beck"
+    publisher: "オーム社"
+    price: 3080
+  - id: 2  # 仮のID、テストによって異なる可能性があります
+    title: "アジャイルサムライ"
+    author: "Jonathan Rasmusson"
+    publisher: "オーム社"
+    price: 2860
+  - id: 3  # 仮のID、テストによって異なる可能性があります
+    title: "エクストリームプログラミング"
+    author: "Kent Beck"
+    publisher: "オーム社"
+    price: 2420
+  - id: 4  # 仮のID、テストによって異なる可能性があります
+    title: "Clean Agile"
+    author: "Robert C. Martin"
+    publisher: "ドワンゴ"
+    price: 2640
