@@ -1,0 +1,6 @@
+environment:
+  baseUri: http://localhost:8080
+spring:
+  sql:
+    init:
+      mode: always

@@ -2,49 +2,32 @@ package com.examination2.books.infrastructure;
 
 import com.examination2.books.domain.Book;
 import com.examination2.books.domain.BookRepository;
-import com.github.database.rider.core.api.configuration.DBUnit;
-import com.github.database.rider.core.api.connection.ConnectionHolder;
-import com.github.database.rider.core.api.dataset.DataSet;
-import com.github.database.rider.core.api.dataset.ExpectedDataSet;
-import com.github.database.rider.junit5.api.DBRider;
-import java.sql.DriverManager;
 import java.util.List;
-import org.flywaydb.core.Flyway;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@DBRider
-@DBUnit
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @ActiveProfiles("dev")
 class BookRepositoryImplTest {
-    private static final String DB_URL = "jdbc:h2:mem:test;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false";
-    private static final String DB_USER = "sa";
-    private static final String DB_PASSWORD = "password";
-
-    private static final ConnectionHolder connectionHolder = () -> DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-
     @Autowired
     BookRepository sut;
 
-    @BeforeAll
-    static void setUpAll() {
-        Flyway.configure().dataSource(DB_URL, DB_USER, DB_PASSWORD).load().migrate();
-    }
     @Test
-    @DataSet(value = "datasets/setup/books.yml")
-    @ExpectedDataSet(value = "datasets/expected/books.yml")
     void 全ての書籍情報を取得する() {
         // setup
-        Book book1 = Book.create("1", "title1", "yamada taro", "example company", "1000");
-        Book book2 = Book.create("2", "title2", "tanaka taro", "example company", "2000");
+        Book book1 = Book.create("1", "テスト駆動開発", "Kent Beck", "オーム社", "3080");
+        Book book2 = Book.create("2", "アジャイルサムライ", "Jonathan Rasmusson", "オーム社", "2860");
+        Book book3 = Book.create("3", "エクストリームプログラミング", "Kent Beck", "オーム社", "2420");
+        Book book4 = Book.create("4", "Clean Agile", "Robert C. Martin", "ドワンゴ", "2640");
 
-        List<Book> expected = List.of(book1, book2);
+        List<Book> expected = List.of(book1, book2, book3, book4);
 
         // execute
         List<Book> actual = sut.findAll();

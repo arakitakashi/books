@@ -21,6 +21,7 @@ class BookTest {
          """)
     void ガード条件に違反する場合(String title, String author, String publisher, String price,
         String message, String testName) {
+
         // assert
         String id = "id";
         assertThatThrownBy(() -> Book.create(id, title, author, publisher, price))

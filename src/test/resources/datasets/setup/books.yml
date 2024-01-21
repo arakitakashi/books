@@ -1,21 +1,17 @@
 books:
-  - id: !!com.github.database.rider.core.util.EntityUtils$DeferredValue
-    title: "テスト駆動開発"
+  - title: "テスト駆動開発"
     author: "Kent Beck"
     publisher: "オーム社"
     price: 3080
-  - id: !!com.github.database.rider.core.util.EntityUtils$DeferredValue
-    title: "アジャイルサムライ"
+  - title: "アジャイルサムライ"
     author: "Jonathan Rasmusson"
     publisher: "オーム社"
     price: 2860
-  - id: !!com.github.database.rider.core.util.EntityUtils$DeferredValue
-    title: "エクストリームプログラミング"
+  - title: "エクストリームプログラミング"
     author: "Kent Beck"
     publisher: "オーム社"
     price: 2420
-  - id: !!com.github.database.rider.core.util.EntityUtils$DeferredValue
-    title: "Clean Agile"
+  - title: "Clean Agile"
     author: "Robert C. Martin"
     publisher: "ドワンゴ"
     price: 2640

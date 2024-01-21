@@ -3,6 +3,8 @@ package com.examination2.books.domain;
 import static com.examination2.books.domain.DomainFieldValidator.validateStringField;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
+import java.util.Objects;
+
 public class Book {
     private final String id;
     private final String title;
@@ -25,5 +27,23 @@ public class Book {
 
     public static Book create(String id, String title, String author, String publisher, String price) {
         return new Book(id, title, author, publisher, price);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Book book)) {
+            return false;
+        }
+        return Objects.equals(id, book.id) && Objects.equals(title, book.title)
+            && Objects.equals(author, book.author) && Objects.equals(publisher,
+            book.publisher) && Objects.equals(price, book.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, author, publisher, price);
     }
 }
