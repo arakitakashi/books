@@ -61,5 +61,24 @@ public class BookControllerTest {
                 .body("books[3].publisher", is("ドワンゴ"))
                 .body("books[3].price", is("2640"));
         }
+
+        @Test
+        void 指定したIDの従業員情報を取得する() {
+            // setup
+            String bookId = "1";
+
+            // assert
+            given()
+                .when()
+                .get("/v1/books/{id}", bookId)
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body("id", is(bookId))
+                .body("books[0].title", is("テスト駆動開発"))
+                .body("books[0].author", is("Kent Beck"))
+                .body("books[0].publisher", is("オーム社"))
+                .body("books[0].price", is("3080"));
+        }
     }
 }
