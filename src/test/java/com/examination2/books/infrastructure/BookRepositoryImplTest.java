@@ -2,8 +2,10 @@ package com.examination2.books.infrastructure;
 
 import com.examination2.books.domain.Book;
 import com.examination2.books.domain.BookRepository;
+import com.examination2.books.domain.exception.BookNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,17 +39,28 @@ class BookRepositoryImplTest {
         assertThat(actual).isEqualTo(expected);
     }
 
-    @Test
-    void 指定したIDの書籍情報を取得する() {
-        // setup
-        Book book1 = Book.create("1", "テスト駆動開発", "Kent Beck", "オーム社", "3080");
+    @Nested
+    class 単体取得 {
+        @Test
+        void 指定したIDの書籍情報を取得する() {
+            // setup
+            Book book1 = Book.create("1", "テスト駆動開発", "Kent Beck", "オーム社", "3080");
 
-        Optional<Book> expected = Optional.of(book1);
+            Optional<Book> expected = Optional.of(book1);
 
-        // execute
-        Optional<Book> actual = sut.findById("1");
+            // execute
+            Optional<Book> actual = sut.findById("1");
 
-        // assert
-        assertThat(actual).isEqualTo(expected);
+            // assert
+            assertThat(actual).isEqualTo(expected);
+        }
+
+        @Test
+        void 指定したIDの書籍情報が存在しない場合例外を返す() {
+            // execute
+            assertThatThrownBy(() -> sut.findById("99"))
+                .isInstanceOf(BookNotFoundException.class)
+                .hasMessage("specified employee [id = 99] is not found.");
+        }
     }
 }
