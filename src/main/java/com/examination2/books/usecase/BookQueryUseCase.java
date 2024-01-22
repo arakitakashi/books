@@ -3,6 +3,7 @@ package com.examination2.books.usecase;
 import com.examination2.books.domain.Book;
 import com.examination2.books.domain.BookRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,5 +14,9 @@ public class BookQueryUseCase {
 
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    public Optional<Book> findById(String id) {
+        return bookRepository.findById(id);
     }
 }
