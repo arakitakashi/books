@@ -42,7 +42,7 @@ public class BookControllerTest {
                 .body("books[0].author", is("Kent Beck"))
                 .body("books[0].publisher", is("オーム社"))
                 .body("books[0].price", is("3080"))
-                
+
                 .body("books[1].id", is("2"))
                 .body("books[1].title", is("アジャイルサムライ"))
                 .body("books[1].author", is("Jonathan Rasmusson"))
