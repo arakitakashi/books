@@ -75,10 +75,25 @@ public class BookControllerTest {
                 .statusCode(200)
                 .assertThat()
                 .body("id", is(bookId))
-                .body("books[0].title", is("テスト駆動開発"))
-                .body("books[0].author", is("Kent Beck"))
-                .body("books[0].publisher", is("オーム社"))
-                .body("books[0].price", is("3080"));
+                .body("title", is("テスト駆動開発"))
+                .body("author", is("Kent Beck"))
+                .body("publisher", is("オーム社"))
+                .body("price", is("3080"));
+        }
+
+        @Test
+        void 指定したIDの書籍情報が存在しない場合エラーを返す() {
+            // setup
+            String invalidBookId = "99";
+
+            // assert
+            given()
+                .when()
+                .get("/v1/books/{id}", invalidBookId)
+                .then()
+                .statusCode(400)
+                .assertThat()
+                .body("message", is("specified book [id = " + invalidBookId + "] is not found."));
         }
     }
 }

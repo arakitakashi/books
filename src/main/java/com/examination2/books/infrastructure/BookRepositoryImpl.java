@@ -47,7 +47,7 @@ public class BookRepositoryImpl implements BookRepository {
             Book book = jdbcTemplate.queryForObject(query, params, new DataClassRowMapper<>(Book.class));
             return Optional.ofNullable(book);
         } catch (EmptyResultDataAccessException e) {
-            throw new BookNotFoundException("specified employee [id = " + id + "] is not found.");
+            throw new BookNotFoundException("specified book [id = " + id + "] is not found.");
         } catch (DataAccessException e) {
             log.warn(DATABASE_ACCESS_ERROR_MESSAGE, e);
             throw e;
