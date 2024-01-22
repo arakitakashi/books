@@ -3,6 +3,7 @@ package com.examination2.books.usecase;
 import com.examination2.books.domain.Book;
 import com.examination2.books.domain.BookRepository;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +30,19 @@ public class BookQueryUseCaseTest {
 
         // execute
         List<Book> actual = sut.findAll();
+
+        // assert
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void 指定したIDの従業員情報を取得する() {
+        // setup
+        Book book = Book.create("1", "テスト駆動開発", "Kent Beck", "オーム社", "3080");
+        Optional<Book> expected = Optional.of(book);
+
+        // execute
+        Optional<Book> actual = sut.findById("1");
 
         // assert
         assertThat(actual).isEqualTo(expected);
