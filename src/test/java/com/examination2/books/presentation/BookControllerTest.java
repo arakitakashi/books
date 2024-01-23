@@ -107,7 +107,7 @@ public class BookControllerTest {
             BookInputDto bookInputDto = new BookInputDto("達人プログラマー", "David Thomas", "オーム社", "3000");
 
             given()
-                .contentType("applicaiton/json")
+                .contentType("application/json")
                 .body(bookInputDto)
                 .when()
                 .post("/v1/books")
