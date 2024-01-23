@@ -1,8 +1,10 @@
 package com.examination2.books.presentation;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
+import com.examination2.books.presentation.dto.BookInputDto;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,6 +97,23 @@ public class BookControllerTest {
                 .statusCode(400)
                 .assertThat()
                 .body("message", is("specified book [id = " + invalidBookId + "] is not found."));
+        }
+    }
+
+    @Nested
+    class 新規登録 {
+        @Test
+        void 指定した書籍情報を登録する() throws Exception {
+            BookInputDto bookInputDto = new BookInputDto("達人プログラマー", "David Thomas", "オーム社", "3000");
+
+            given()
+                .contentType("applicaiton/json")
+                .body(bookInputDto)
+                .when()
+                .post("/v1/books")
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .header("Location", containsString("/v1/books/5"));
         }
     }
 }
