@@ -10,14 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-@ActiveProfiles("dev")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class BookRepositoryImplTest {
     @Autowired
     BookRepository sut;
@@ -47,7 +44,8 @@ class BookRepositoryImplTest {
             Book book1 = Book.create("1", "テスト駆動開発", "Kent Beck", "オーム社", "3080");
 
             Optional<Book> expected = Optional.of(book1);
-
+            List<Book> all = sut.findAll();
+            all.forEach(book -> System.out.println(book.toString()));
             // execute
             Optional<Book> actual = sut.findById("1");
 
@@ -60,7 +58,26 @@ class BookRepositoryImplTest {
             // execute
             assertThatThrownBy(() -> sut.findById("99"))
                 .isInstanceOf(BookNotFoundException.class)
-                .hasMessage("specified employee [id = 99] is not found.");
+                .hasMessage("specified book [id = 99] is not found.");
+        }
+    }
+
+    @Nested
+    class 新規登録 {
+        @Test
+        void 指定した書籍情報を新規登録する() {
+            // setup
+            Book newBook = Book.createWithoutId("達人プログラマー", "David Thomas", "オーム社", "4000");
+
+            Optional<Book> expected = Optional.of(Book.create("5", "達人プログラマー", "David Thomas", "オーム社", "4000"));
+
+            // execute
+            sut.register(newBook);
+
+            // assert
+            Optional<Book> actual = sut.findById("5");
+            assertThat(actual).isEqualTo(expected);
+
         }
     }
 }

@@ -29,6 +29,10 @@ public class Book {
         return new Book(id, title, author, publisher, price);
     }
 
+    public static Book createWithoutId(String title, String author, String publisher, String price) {
+        return new Book(null, title, author, publisher, price);
+    }
+
     public String getId() {
         return id;
     }
@@ -62,8 +66,19 @@ public class Book {
             book.publisher) && Objects.equals(price, book.price);
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(id, title, author, publisher, price);
+    }
+    @Override
+    public String toString() {
+        return "Book{" +
+            "id='" + id + '\'' +
+            ", title='" + title + '\'' +
+            ", author='" + author + '\'' +
+            ", publisher='" + publisher + '\'' +
+            ", price='" + price + '\'' +
+            '}';
     }
 }
