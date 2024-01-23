@@ -53,4 +53,33 @@ public class BookRepositoryImpl implements BookRepository {
             throw e;
         }
     }
+
+    @Override
+    public Book register(Book book) {
+        String sequenceQuery = "SELECT nextval('BOOK_ID_SEQ')";
+        Integer id = jdbcTemplate.queryForObject(sequenceQuery, new HashMap<>(), Integer.class);
+
+        String query =
+            "INSERT INTO books (id, title, author, publisher, price) VALUES (:id, :title, :author, :publisher, :price)";
+
+        Map<String, Object> params = createSaveParams(String.valueOf(id), book);
+
+        try {
+            jdbcTemplate.update(query, params);
+            return Book.create(String.valueOf(id), book.getTitle(), book.getAuthor(), book.getPublisher(), book.getPrice());
+        } catch (DataAccessException e) {
+            log.error(DATABASE_ACCESS_ERROR_MESSAGE, e);
+            throw e;
+        }
+    }
+
+    private Map<String, Object> createSaveParams(String id, Book book) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("title", book.getTitle());
+        result.put("author", book.getAuthor());
+        result.put("publisher", book.getPublisher());
+        result.put("price", book.getPrice());
+        return result;
+    }
 }

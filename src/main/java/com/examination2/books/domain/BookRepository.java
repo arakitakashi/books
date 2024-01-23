@@ -7,4 +7,6 @@ public interface BookRepository {
     List<Book> findAll();
 
     Optional<Book> findById(String id);
+
+    Book register(Book book);
 }
