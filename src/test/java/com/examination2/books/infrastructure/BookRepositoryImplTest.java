@@ -80,4 +80,21 @@ class BookRepositoryImplTest {
 
         }
     }
+
+    @Nested
+    class 更新 {
+        @Test
+        void 指定した書籍情報を更新する() {
+            // setup
+            Optional<Book> expected = Optional.of(Book.create("1", "テスト駆動開発第２版", "Kent Beck", "オーム社", "3080"));
+            Book book = Book.create("1", "テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
+
+            // execute
+            sut.update(book);
+
+            // assert
+            Optional<Book> actual = sut.findById("1");
+            assertThat(actual).isEqualTo(expected);
+        }
+    }
 }
