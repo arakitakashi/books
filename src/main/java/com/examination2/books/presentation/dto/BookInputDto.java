@@ -1,12 +1,20 @@
 package com.examination2.books.presentation.dto;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import com.examination2.books.presentation.validation.ValidPrice;
+import jakarta.validation.constraints.NotBlank;
 
-public record BookInputDto(String title, String author, String publisher, String price) {
+public record BookInputDto(
+    @NotBlank(message = "title must not be blank")
+    String title,
+
+    @NotBlank(message = "author must not be blank")
+    String author,
+
+    @NotBlank(message = "publisher must not be blank")
+    String publisher,
+
+    @ValidPrice(message = "price must be a numeric value")
+    String price) {
     public BookInputDto {
-        if(isBlank(title)) throw new IllegalArgumentException("title must not be blank");
-        if(isBlank(author)) throw new IllegalArgumentException("author must not be blank");
-        if(isBlank(publisher)) throw new IllegalArgumentException("publisher must not be blank");
-        if(isBlank(price)) throw new IllegalArgumentException("price must not be blank");
     }
 }

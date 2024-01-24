@@ -3,6 +3,7 @@ package com.examination2.books.domain.exception;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,6 +24,16 @@ public class BookGlobalExceptionHandler {
         body.put("error", "Bad Request");
         body.put(KEY_OF_CODE, "0003");
         body.put(KEY_OF_MESSAGE, e.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(
+        IllegalArgumentException e) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put(KEY_OF_CODE, "0002");
+        body.put(KEY_OF_MESSAGE, "request validation error is occurred");
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
