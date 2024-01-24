@@ -9,4 +9,6 @@ public interface BookRepository {
     Optional<Book> findById(String id);
 
     Book register(Book book);
+
+    Book update(Book book);
 }

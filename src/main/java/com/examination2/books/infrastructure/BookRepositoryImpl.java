@@ -16,6 +16,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.DataClassRowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Repository
@@ -44,10 +45,11 @@ public class BookRepositoryImpl implements BookRepository {
         params.put("id", id);
 
         try {
-            Book book = jdbcTemplate.queryForObject(query, params, new DataClassRowMapper<>(Book.class));
+            Book book = jdbcTemplate.queryForObject(query, params,
+                new DataClassRowMapper<>(Book.class));
             return Optional.ofNullable(book);
         } catch (EmptyResultDataAccessException e) {
-            throw new BookNotFoundException("specified book [id = " + id + "] is not found.");
+            throw new BookNotFoundException(createNotFoundMessage(id));
         } catch (DataAccessException e) {
             log.warn(DATABASE_ACCESS_ERROR_MESSAGE, e);
             throw e;
@@ -66,7 +68,8 @@ public class BookRepositoryImpl implements BookRepository {
 
         try {
             jdbcTemplate.update(query, params);
-            return Book.create(String.valueOf(id), book.getTitle(), book.getAuthor(), book.getPublisher(), book.getPrice());
+            return Book.create(String.valueOf(id), book.getTitle(), book.getAuthor(),
+                book.getPublisher(), book.getPrice());
         } catch (DataAccessException e) {
             log.error(DATABASE_ACCESS_ERROR_MESSAGE, e);
             throw e;
@@ -82,4 +85,39 @@ public class BookRepositoryImpl implements BookRepository {
         result.put("price", book.getPrice());
         return result;
     }
+
+    @Override
+    @Transactional
+    public Book update(Book book) {
+        String query =
+            "UPDATE books SET title = :title, author = :author, publisher = :publisher, price = :price WHERE id = :id";
+
+        Map<String, Object> params = createUpdateParams(book);
+
+        try {
+            int updated = jdbcTemplate.update(query, params);
+            if (updated > 0) {
+                return book;
+            }
+            log.warn("Book was not found");
+            throw new BookNotFoundException(createNotFoundMessage(book.getId()));
+        } catch (DataAccessException e) {
+            log.error(DATABASE_ACCESS_ERROR_MESSAGE, e);
+            throw e;
+        }
+    }
+    private Map<String, Object> createUpdateParams(Book book) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", book.getId());
+        result.put("title", book.getTitle());
+        result.put("author", book.getAuthor());
+        result.put("publisher", book.getPublisher());
+        result.put("price", book.getPrice());
+        return result;
+    }
+
+    private String createNotFoundMessage(String id) {
+        return "specified employee [id = " + id + "] is not found.";
+    }
 }
+
