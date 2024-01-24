@@ -96,5 +96,16 @@ class BookRepositoryImplTest {
             Optional<Book> actual = sut.findById("1");
             assertThat(actual).isEqualTo(expected);
         }
+
+        @Test
+        void 指定IDの書籍情報が存在しない場合例外を返す() {
+            // setup
+            Book book = Book.create("99", "invalidBook", "invalidAuthor", "invalidPublisher", "9999");
+
+            // assert
+            assertThatThrownBy(() -> sut.update(book))
+                .isInstanceOf(BookNotFoundException.class)
+                .hasMessage("specified book [id = " + book.getId() + "] is not found.");
+        }
     }
 }
