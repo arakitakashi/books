@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 import com.examination2.books.domain.Book;
 import com.examination2.books.presentation.dto.BookDto;
 import com.examination2.books.presentation.dto.BookInputDto;
+import com.examination2.books.presentation.dto.BookUpdateDto;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -150,7 +151,7 @@ public class BookControllerTest {
     class 更新 {
         @Test
             void 指定したIDの書籍情報を更新する() throws Exception {
-            BookUpdateDto bookDto = new BookUpdateDto("テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
+            BookUpdateDto bookUpdateDto = new BookUpdateDto("テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
             given()
                 .contentType("application/json")
                 .body(bookUpdateDto)
