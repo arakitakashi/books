@@ -13,4 +13,6 @@ public class BookCommandUseCase {
    public Book registerBook(Book book) {
        return bookRepository.register(book);
    }
+
+   public Book updateBook(Book book) { return bookRepository.update(book); }
 }

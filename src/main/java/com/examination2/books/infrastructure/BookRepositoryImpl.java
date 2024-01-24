@@ -117,7 +117,7 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     private String createNotFoundMessage(String id) {
-        return "specified employee [id = " + id + "] is not found.";
+        return "specified book [id = " + id + "] is not found.";
     }
 }
 
