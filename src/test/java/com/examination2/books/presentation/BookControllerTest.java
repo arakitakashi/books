@@ -4,6 +4,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
+import com.examination2.books.domain.Book;
+import com.examination2.books.presentation.dto.BookDto;
 import com.examination2.books.presentation.dto.BookInputDto;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -141,6 +143,53 @@ public class BookControllerTest {
                 .post("/v1/books")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    @Nested
+    class 更新 {
+        @Test
+            void 指定したIDの書籍情報を更新する() throws Exception {
+            BookUpdateDto bookDto = new BookUpdateDto("テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
+            given()
+                .contentType("application/json")
+                .body(bookUpdateDto)
+                .when()
+                .patch("/v1/books/1")
+                .then()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+        }
+
+        @ParameterizedTest(name = "{5}の場合")
+        @CsvSource(delimiter = '|', textBlock= """
+        # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                                           | TESTNAME
+                     | Kent Beck | オーム社    | 3080 | Title should not be empty or null. value: null    |  タイトルがnull 
+              ''     | Kent Beck | オーム社    | 3080 | Title should not be empty or null. value:         |  タイトルが空文字 
+         テスト駆動開発 |           | オーム社   | 3080 | Author should not be empty or null. value: null    |  著者がnull
+         テスト駆動開発 | ''        | オーム社   | 3080 | Author should not be empty or null. value:         |  著者が空文字
+         テスト駆動開発 | Kent Beck |           | 3080 | Publisher should not be empty or null. value: null |  出版社がnull
+         テスト駆動開発 | Kent Beck | ''        | 3080 | Publisher should not be empty or null. value:      |  出版社が空文字
+         テスト駆動開発 | Kent Beck | オーム社   | -100 | Price should be positive numeric value             | 価格がマイナス 
+         テスト駆動開発 | Kent Beck | オーム社   | ABCD | Price should be positive numeric value             | 価格が数字ではない 
+            """)
+        @Test
+        void 指定した書籍情報が不正の場合エラーを返す(
+            String title,
+            String author,
+            String publisher,
+            String price,
+            String message,
+            String testName
+        ) throws Exception {
+            BookUpdateDto bookUpdateDto = new BookUpdateDto(title, author, publisher, price);
+            given()
+                .contentType("application/json")
+                .body(bookUpdateDto)
+                .when()
+                .patch("/v1/books/1")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", is(message));
         }
     }
 }
