@@ -35,4 +35,16 @@ public class BookCommandUseCaseTest {
         assertThat(actual).isEqualTo(expected);
     }
 
+    @Test
+    void 指定したIDの書籍情報を更新する() {
+        // setup
+        Book book = Book.create("1", "テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
+        Book expected = Book.create("1", "テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
+
+        // execute
+        Book actual = sut.updateBook(book);
+
+        // actual
+        assertThat(actual).isEqualTo(expected);
+    }
 }
