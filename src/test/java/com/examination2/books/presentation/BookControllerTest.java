@@ -2,7 +2,9 @@ package com.examination2.books.presentation;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.contains;
 
 import com.examination2.books.domain.Book;
 import com.examination2.books.presentation.dto.BookDto;
@@ -123,15 +125,12 @@ public class BookControllerTest {
 
         @ParameterizedTest(name = "{5}の場合")
         @CsvSource(delimiter = '|', textBlock= """
-        # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                                           | TESTNAME
-                     | Kent Beck | オーム社    | 3080 | Title should not be empty or null. value: null    |  タイトルがnull 
-              ''     | Kent Beck | オーム社    | 3080 | Title should not be empty or null. value:         |  タイトルが空文字 
-         テスト駆動開発 |           | オーム社   | 3080 | Author should not be empty or null. value: null    |  著者がnull
-         テスト駆動開発 | ''        | オーム社   | 3080 | Author should not be empty or null. value:         |  著者が空文字
-         テスト駆動開発 | Kent Beck |           | 3080 | Publisher should not be empty or null. value: null |  出版社がnull
-         テスト駆動開発 | Kent Beck | ''        | 3080 | Publisher should not be empty or null. value:      |  出版社が空文字
-         テスト駆動開発 | Kent Beck | オーム社   | -100 | Price should be positive numeric value             | 価格がマイナス 
-         テスト駆動開発 | Kent Beck | オーム社   | ABCD | Price should be positive numeric value             | 価格が数字ではない 
+        # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                      | TESTNAME
+              ''     | Kent Beck | オーム社    | 3080 | Title must not be blank      |  タイトルが空文字 
+         テスト駆動開発 | ''        | オーム社   | 3080 | Author must not be blank      |  著者が空文字
+         テスト駆動開発 | Kent Beck | ''        | 3080 | Publisher must not be blank  |  出版社が空文字
+         テスト駆動開発 | Kent Beck | オーム社   | -100 | Price must be a numeric value | 価格がマイナス 
+         テスト駆動開発 | Kent Beck | オーム社   | ABCD | Price must be a numeric value | 価格が数字ではない 
             """)
         void 指定した書籍情報が不正の場合エラーを返す(
             String title, String author, String publisher, String price, String message, String testName
@@ -143,7 +142,8 @@ public class BookControllerTest {
                 .when()
                 .post("/v1/books")
                 .then()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("details[0]", is(message));
         }
     }
 
@@ -163,17 +163,13 @@ public class BookControllerTest {
 
         @ParameterizedTest(name = "{5}の場合")
         @CsvSource(delimiter = '|', textBlock= """
-        # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                                           | TESTNAME
-                     | Kent Beck | オーム社    | 3080 | Title should not be empty or null. value: null    |  タイトルがnull 
-              ''     | Kent Beck | オーム社    | 3080 | Title should not be empty or null. value:         |  タイトルが空文字 
-         テスト駆動開発 |           | オーム社   | 3080 | Author should not be empty or null. value: null    |  著者がnull
-         テスト駆動開発 | ''        | オーム社   | 3080 | Author should not be empty or null. value:         |  著者が空文字
-         テスト駆動開発 | Kent Beck |           | 3080 | Publisher should not be empty or null. value: null |  出版社がnull
-         テスト駆動開発 | Kent Beck | ''        | 3080 | Publisher should not be empty or null. value:      |  出版社が空文字
-         テスト駆動開発 | Kent Beck | オーム社   | -100 | Price should be positive numeric value             | 価格がマイナス 
-         テスト駆動開発 | Kent Beck | オーム社   | ABCD | Price should be positive numeric value             | 価格が数字ではない 
+        # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                      | TESTNAME
+              ''     | Kent Beck | オーム社    | 3080 | Title must not blank          |  タイトルが空文字 
+         テスト駆動開発 | ''        | オーム社   | 3080 | Author must not blank         |  著者が空文字
+         テスト駆動開発 | Kent Beck | ''        | 3080 | Publisher must not blank      |  出版社が空文字
+         テスト駆動開発 | Kent Beck | オーム社   | -100 | Price must be a numeric value | 価格がマイナス 
+         テスト駆動開発 | Kent Beck | オーム社   | ABCD | Price must be a numeric value | 価格が数字ではない 
             """)
-        @Test
         void 指定した書籍情報が不正の場合エラーを返す(
             String title,
             String author,
@@ -190,7 +186,7 @@ public class BookControllerTest {
                 .patch("/v1/books/1")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", is(message));
+                .body("details[0]", is(message));
         }
     }
 }

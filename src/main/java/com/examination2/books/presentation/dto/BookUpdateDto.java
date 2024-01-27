@@ -4,15 +4,15 @@ import com.examination2.books.presentation.validation.ValidPrice;
 import jakarta.validation.constraints.NotBlank;
 
 public record BookUpdateDto(
-    @NotBlank(message = "title must not blank")
+    @NotBlank(message = "Title must not blank")
     String title,
 
-    @NotBlank(message = "author must not blank")
+    @NotBlank(message = "Author must not blank")
     String author,
 
-    @NotBlank(message = "publisher must not blank")
+    @NotBlank(message = "Publisher must not blank")
     String publisher,
 
-    @ValidPrice(message = "price must be a numeric value")
+    @ValidPrice(message = "Price must be a numeric value")
     String price) {
 }

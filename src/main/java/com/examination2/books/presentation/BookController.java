@@ -1,10 +1,13 @@
 package com.examination2.books.presentation;
 
 
+import static java.util.Objects.isNull;
+
 import com.examination2.books.domain.Book;
 import com.examination2.books.presentation.dto.BookDto;
 import com.examination2.books.presentation.dto.BookInputDto;
 import com.examination2.books.presentation.dto.BookListDto;
+import com.examination2.books.presentation.dto.BookUpdateDto;
 import com.examination2.books.usecase.BookCommandUseCase;
 import com.examination2.books.usecase.BookQueryUseCase;
 import java.net.URI;
@@ -15,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,5 +77,40 @@ public class BookController {
             .path("/{id}")
             .buildAndExpand(newBook.getId())
             .toUri();
+    }
+
+    @PatchMapping("/v1/books/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> updateBook(
+        @PathVariable String id,
+        @RequestBody @Validated BookUpdateDto bookUpdateDto
+    ) {
+        bookQueryUseCase.findById(id)
+            .ifPresent(existingBook -> {
+                    bookCommandUseCase.updateBook(
+                        createUpdateBook(bookUpdateDto, existingBook)
+                    );
+                }
+            );
+        return ResponseEntity.noContent().build();
+    }
+
+    private Book createUpdateBook(BookUpdateDto bookUpdateDto, Book existingBook) {
+        String updateTitle =
+            !isNull(bookUpdateDto.title()) ? bookUpdateDto.title() : existingBook.getTitle();
+        String updateAuthor =
+            !isNull(bookUpdateDto.author()) ? bookUpdateDto.author() : existingBook.getAuthor();
+        String updatePublisher =
+            !isNull(bookUpdateDto.publisher()) ? bookUpdateDto.publisher() : existingBook.getPublisher();
+        String updatePrice =
+            !isNull(bookUpdateDto.price()) ? bookUpdateDto.price() : existingBook.getPrice();
+
+        return Book.create(
+            existingBook.getId(),
+            updateTitle,
+            updateAuthor,
+            updatePublisher,
+            updatePrice
+        );
     }
 }
