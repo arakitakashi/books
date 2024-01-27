@@ -11,4 +11,6 @@ public interface BookRepository {
     Book register(Book book);
 
     Book update(Book book);
+
+    Book delete(String id);
 }

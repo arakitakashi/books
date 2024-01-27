@@ -108,4 +108,32 @@ class BookRepositoryImplTest {
                 .hasMessage("specified book [id = " + book.getId() + "] is not found.");
         }
     }
+
+    @Nested
+    class 削除 {
+        @Test
+        void 指定したIDの書籍情報を削除する() {
+            // setup
+            String bookId = "2";
+
+            // execute
+            sut.delete(bookId);
+
+            // assert
+            assertThatThrownBy(() -> sut.findById(bookId))
+                .isInstanceOf(BookNotFoundException.class)
+                .hasMessage("specified book [id = " + bookId + "] is not found.");
+        }
+
+        @Test
+        void 指定したIDの書籍情報が存在しない場合例外を返す() {
+            // setup
+            String invalidBookId = "99";
+
+            // assert
+            assertThatThrownBy(() -> sut.delete(invalidBookId))
+                .isInstanceOf(BookNotFoundException.class)
+                .hasMessage("specified book [id = " + invalidBookId + "] is not found.");
+        }
+    }
 }
