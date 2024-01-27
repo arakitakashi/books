@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.shaded.org.checkerframework.checker.units.qual.N;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Transactional
@@ -187,6 +188,17 @@ public class BookControllerTest {
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body("details[0]", is(message));
+        }
+    }
+
+    @Nested
+    class 削除 {
+        @Test
+        void 指定したIDの書籍情報を削除する() {
+            given()
+                .delete("/v1/books/{id}", "1")
+                .then()
+                .statusCode(HttpStatus.NO_CONTENT.value());
         }
     }
 }
