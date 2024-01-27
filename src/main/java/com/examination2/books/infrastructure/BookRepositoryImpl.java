@@ -119,5 +119,31 @@ public class BookRepositoryImpl implements BookRepository {
     private String createNotFoundMessage(String id) {
         return "specified book [id = " + id + "] is not found.";
     }
+
+    @Override
+    @Transactional
+    public boolean delete(String id) {
+        try {
+            String query = "DELETE FROM books WHERE id = :id";
+
+            Map<String, Object> params = createDeleteParams(id);
+
+            int affectedRows = jdbcTemplate.update(query, params);
+
+            if (affectedRows == 0) {
+                throw new BookNotFoundException((createNotFoundMessage(id)));
+            }
+            return affectedRows > 0;
+        } catch (DataAccessException e) {
+            log.error(DATABASE_ACCESS_ERROR_MESSAGE, e);
+            throw e;
+        }
+    }
+
+    private Map<String, Object> createDeleteParams(String id) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        return result;
+    }
 }
 

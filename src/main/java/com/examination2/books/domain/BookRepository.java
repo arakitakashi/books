@@ -12,5 +12,5 @@ public interface BookRepository {
 
     Book update(Book book);
 
-    Book delete(String id);
+    boolean delete(String id);
 }
