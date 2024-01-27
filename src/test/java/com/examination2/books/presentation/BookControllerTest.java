@@ -92,20 +92,7 @@ public class BookControllerTest {
                 .body("price", is("3080"));
         }
 
-        @Test
-        void 指定したIDの書籍情報が存在しない場合エラーを返す() {
-            // setup
-            String invalidBookId = "99";
 
-            // assert
-            given()
-                .when()
-                .get("/v1/books/{id}", invalidBookId)
-                .then()
-                .statusCode(400)
-                .assertThat()
-                .body("message", is("specified book [id = " + invalidBookId + "] is not found."));
-        }
     }
 
     @Nested
@@ -200,5 +187,20 @@ public class BookControllerTest {
                 .then()
                 .statusCode(HttpStatus.NO_CONTENT.value());
         }
+    }
+
+    @Test
+    void 指定したIDの書籍情報が存在しない場合エラーを返す() {
+        // setup
+        String invalidBookId = "99";
+
+        // assert
+        given()
+            .when()
+            .get("/v1/books/{id}", invalidBookId)
+            .then()
+            .statusCode(400)
+            .assertThat()
+            .body("message", is("specified book [id = " + invalidBookId + "] is not found."));
     }
 }
