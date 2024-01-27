@@ -8,11 +8,17 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BookCommandUseCase {
-   private final BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-   public Book registerBook(Book book) {
-       return bookRepository.register(book);
-   }
+    public Book registerBook(Book book) {
+        return bookRepository.register(book);
+    }
 
-   public Book updateBook(Book book) { return bookRepository.update(book); }
+    public Book updateBook(Book book) {
+        return bookRepository.update(book);
+    }
+
+    public boolean deleteBook(String id) {
+        return bookRepository.delete(id);
+    }
 }
