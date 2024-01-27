@@ -47,4 +47,16 @@ public class BookCommandUseCaseTest {
         // actual
         assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    void 指定したIDの書籍情報を削除する() {
+        // setup
+        String bookId = "1";
+
+        // execute
+        boolean actual = sut.deleteBook(bookId);
+
+        // actual
+        assertThat(actual).isTrue();
+    }
 }
