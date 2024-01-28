@@ -7,11 +7,6 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class PriceValidator implements ConstraintValidator<ValidPrice, String> {
     @Override
-    public void initialize(ValidPrice constraintAnnotation) {
-
-    }
-
-    @Override
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
        if (isBlank(value)) {
            return false;

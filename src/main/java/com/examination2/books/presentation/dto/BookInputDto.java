@@ -15,6 +15,4 @@ public record BookInputDto(
 
     @ValidPrice(message = "Price must be a numeric value")
     String price) {
-    public BookInputDto {
-    }
 }

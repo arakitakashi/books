@@ -55,7 +55,8 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookDto> getBookById(@PathVariable String id) {
         Optional<Book> book = bookQueryUseCase.findById(id);
-        return book.map(b -> ResponseEntity.ok(convertToDto(b))).orElseGet(() -> ResponseEntity.notFound().build());
+        return book.map(b -> ResponseEntity.ok(convertToDto(b)))
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/v1/books")
@@ -77,9 +78,9 @@ public class BookController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateBook(@PathVariable String id,
         @RequestBody @Validated BookUpdateDto bookUpdateDto) {
-        bookQueryUseCase.findById(id).ifPresent(existingBook -> {
-            bookCommandUseCase.updateBook(createUpdateBook(bookUpdateDto, existingBook));
-        });
+        bookQueryUseCase.findById(id).ifPresent(existingBook ->
+            bookCommandUseCase.updateBook(createUpdateBook(bookUpdateDto, existingBook))
+        );
         return ResponseEntity.noContent().build();
     }
 

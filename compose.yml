@@ -1,0 +1,7 @@
+version: "1"
+services:
+  sonarqube:
+    image: sonarqube:10.3.0-community
+    ports:
+      - "9000:9000"
+    profiles: [ "local" ]

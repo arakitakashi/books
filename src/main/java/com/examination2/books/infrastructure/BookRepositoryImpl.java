@@ -42,7 +42,7 @@ public class BookRepositoryImpl implements BookRepository {
         String query = "SELECT id, title, author, publisher, price FROM books WHERE id = :id";
 
         Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
+        params.put("id", Integer.parseInt(id));
 
         try {
             Book book = jdbcTemplate.queryForObject(query, params,
@@ -64,7 +64,7 @@ public class BookRepositoryImpl implements BookRepository {
         String query =
             "INSERT INTO books (id, title, author, publisher, price) VALUES (:id, :title, :author, :publisher, :price)";
 
-        Map<String, Object> params = createSaveParams(String.valueOf(id), book);
+        Map<String, Object> params = createSaveParams(id, book);
 
         try {
             jdbcTemplate.update(query, params);
@@ -76,7 +76,7 @@ public class BookRepositoryImpl implements BookRepository {
         }
     }
 
-    private Map<String, Object> createSaveParams(String id, Book book) {
+    private Map<String, Object> createSaveParams(int id, Book book) {
         Map<String, Object> result = new HashMap<>();
         result.put("id", id);
         result.put("title", book.getTitle());
@@ -108,7 +108,7 @@ public class BookRepositoryImpl implements BookRepository {
     }
     private Map<String, Object> createUpdateParams(Book book) {
         Map<String, Object> result = new HashMap<>();
-        result.put("id", book.getId());
+        result.put("id", Integer.parseInt(book.getId()));
         result.put("title", book.getTitle());
         result.put("author", book.getAuthor());
         result.put("publisher", book.getPublisher());
@@ -142,8 +142,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     private Map<String, Object> createDeleteParams(String id) {
         Map<String, Object> result = new HashMap<>();
-        result.put("id", id);
+        result.put("id", Integer.parseInt(id));
         return result;
     }
 }
-

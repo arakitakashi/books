@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Transactional
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
-public class BookControllerTest {
+class BookControllerTest {
     @LocalServerPort
     private int port;
 

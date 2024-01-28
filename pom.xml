@@ -23,6 +23,10 @@
     <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
     <database-rider.version>1.41.0</database-rider.version>
     <rider-junit5.version>1.19.0</rider-junit5.version>
+
+    <sonar.exclusions>
+      src/main/java/com/examination2/books/BooksApplication.java
+    </sonar.exclusions>
   </properties>
   <dependencies>
     <dependency>
