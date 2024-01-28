@@ -57,25 +57,25 @@ public class BookControllerTest {
                 .body("books[0].title", is("テスト駆動開発"))
                 .body("books[0].author", is("Kent Beck"))
                 .body("books[0].publisher", is("オーム社"))
-                .body("books[0].price", is("3080"))
+                .body("books[0].price", is(3080))
 
                 .body("books[1].id", is("2"))
                 .body("books[1].title", is("アジャイルサムライ"))
                 .body("books[1].author", is("Jonathan Rasmusson"))
                 .body("books[1].publisher", is("オーム社"))
-                .body("books[1].price", is("2860"))
+                .body("books[1].price", is(2860))
 
                 .body("books[2].id", is("3"))
                 .body("books[2].title", is("エクストリームプログラミング"))
                 .body("books[2].author", is("Kent Beck"))
                 .body("books[2].publisher", is("オーム社"))
-                .body("books[2].price", is("2420"))
+                .body("books[2].price", is(2420))
 
                 .body("books[3].id", is("4"))
                 .body("books[3].title", is("Clean Agile"))
                 .body("books[3].author", is("Robert C. Martin"))
                 .body("books[3].publisher", is("ドワンゴ"))
-                .body("books[3].price", is("2640"));
+                .body("books[3].price", is(2640));
         }
 
         @Test
@@ -94,10 +94,8 @@ public class BookControllerTest {
                 .body("title", is("テスト駆動開発"))
                 .body("author", is("Kent Beck"))
                 .body("publisher", is("オーム社"))
-                .body("price", is("3080"));
+                .body("price", is(3080));
         }
-
-
     }
 
     @Nested

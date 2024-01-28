@@ -36,7 +36,7 @@ public class BookController {
     public ResponseEntity<Void> getRoot() {
         return ResponseEntity.ok().build();
     }
-    
+
     @GetMapping("/v1/books")
     @ResponseStatus(HttpStatus.OK)
     public BookListDto getBooks() {
@@ -48,14 +48,14 @@ public class BookController {
 
     private BookDto convertToDto(Book book) {
         return new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPublisher(),
-            book.getPrice());
+            Integer.parseInt(book.getPrice()));
     }
 
     @GetMapping("/v1/books/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Book> getBookById(@PathVariable String id) {
+    public ResponseEntity<BookDto> getBookById(@PathVariable String id) {
         Optional<Book> book = bookQueryUseCase.findById(id);
-        return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return book.map(b -> ResponseEntity.ok(convertToDto(b))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/v1/books")
