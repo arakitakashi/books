@@ -1,4 +1,4 @@
-package com.examination2.books.domain;
+package com.examination2.books.domain.book;
 
 import java.util.List;
 import java.util.Optional;

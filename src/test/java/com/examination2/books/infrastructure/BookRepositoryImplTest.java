@@ -1,7 +1,7 @@
 package com.examination2.books.infrastructure;
 
-import com.examination2.books.domain.Book;
-import com.examination2.books.domain.BookRepository;
+import com.examination2.books.domain.book.Book;
+import com.examination2.books.domain.book.BookRepository;
 import com.examination2.books.domain.exception.BookNotFoundException;
 import java.util.List;
 import java.util.Optional;

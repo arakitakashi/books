@@ -2,6 +2,7 @@ package com.examination2.books.domain;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import com.examination2.books.domain.book.Book;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 

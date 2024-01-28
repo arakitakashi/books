@@ -2,7 +2,7 @@ package com.examination2.books.presentation;
 
 import static java.util.Objects.isNull;
 
-import com.examination2.books.domain.Book;
+import com.examination2.books.domain.book.Book;
 import com.examination2.books.presentation.dto.BookDto;
 import com.examination2.books.presentation.dto.BookInputDto;
 import com.examination2.books.presentation.dto.BookListDto;

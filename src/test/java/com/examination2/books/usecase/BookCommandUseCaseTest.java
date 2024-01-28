@@ -2,8 +2,8 @@ package com.examination2.books.usecase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.examination2.books.domain.Book;
-import com.examination2.books.domain.BookRepository;
+import com.examination2.books.domain.book.Book;
+import com.examination2.books.domain.book.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

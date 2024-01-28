@@ -1,7 +1,7 @@
 package com.examination2.books.usecase;
 
-import com.examination2.books.domain.Book;
-import com.examination2.books.domain.BookRepository;
+import com.examination2.books.domain.book.Book;
+import com.examination2.books.domain.book.BookRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;

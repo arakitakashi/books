@@ -9,6 +9,9 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/**
+ * @ValidPrice アノテーションを定義するクラス。
+ */
 @Documented
 @Constraint(validatedBy = PriceValidator.class)
 @Target({ FIELD })
