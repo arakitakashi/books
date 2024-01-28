@@ -41,7 +41,7 @@ public class BookControllerTest {
             .then()
             .statusCode(HttpStatus.OK.value());
     }
-    
+
     @Nested
     class 参照 {
         @Test

@@ -32,6 +32,11 @@ public class BookController {
     private final BookQueryUseCase bookQueryUseCase;
     private final BookCommandUseCase bookCommandUseCase;
 
+    @GetMapping("/")
+    public ResponseEntity<Void> getRoot() {
+        return ResponseEntity.ok().build();
+    }
+    
     @GetMapping("/v1/books")
     @ResponseStatus(HttpStatus.OK)
     public BookListDto getBooks() {
