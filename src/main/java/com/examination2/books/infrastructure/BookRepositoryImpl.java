@@ -14,10 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.DataClassRowMapper;
-import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * {@link BookRepository}のJDBCによる実装。 書籍情報のデータベース操作を担います。
+ */
 @Slf4j
 @Repository
 @RequiredArgsConstructor
@@ -25,6 +28,9 @@ public class BookRepositoryImpl implements BookRepository {
     private static final String DATABASE_ACCESS_ERROR_MESSAGE = "Database Access Error";
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Book> findAll() {
         String query = "SELECT id, title, author, publisher, price FROM books";
@@ -37,6 +43,9 @@ public class BookRepositoryImpl implements BookRepository {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Book> findById(String id) {
         String query = "SELECT id, title, author, publisher, price FROM books WHERE id = :id";
@@ -56,6 +65,9 @@ public class BookRepositoryImpl implements BookRepository {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Book register(Book book) {
         String sequenceQuery = "SELECT nextval('BOOK_ID_SEQ')";
@@ -82,10 +94,13 @@ public class BookRepositoryImpl implements BookRepository {
         result.put("title", book.getTitle());
         result.put("author", book.getAuthor());
         result.put("publisher", book.getPublisher());
-        result.put("price", book.getPrice());
+        result.put("price", Integer.parseInt(book.getPrice()));
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public Book update(Book book) {
@@ -106,13 +121,14 @@ public class BookRepositoryImpl implements BookRepository {
             throw e;
         }
     }
+
     private Map<String, Object> createUpdateParams(Book book) {
         Map<String, Object> result = new HashMap<>();
         result.put("id", Integer.parseInt(book.getId()));
         result.put("title", book.getTitle());
         result.put("author", book.getAuthor());
         result.put("publisher", book.getPublisher());
-        result.put("price", book.getPrice());
+        result.put("price", Integer.parseInt(book.getPrice()));
         return result;
     }
 
@@ -120,6 +136,9 @@ public class BookRepositoryImpl implements BookRepository {
         return "specified book [id = " + id + "] is not found.";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public boolean delete(String id) {

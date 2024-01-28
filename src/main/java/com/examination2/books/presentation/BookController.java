@@ -26,17 +26,30 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+/**
+ * 書籍に関する操作を提供するコントローラー。 このクラスは従業員の検索、登録、更新、削除のためのエンドポイントを提供します。
+ */
 @RequiredArgsConstructor
 @RestController
 public class BookController {
     private final BookQueryUseCase bookQueryUseCase;
     private final BookCommandUseCase bookCommandUseCase;
 
+    /**
+     * アプリケーションのルートエンドポイントに対するレスポンスを提供します。
+     *
+     * @return HTTPステータス200（OK）のレスポンスエンティティ
+     */
     @GetMapping("/")
     public ResponseEntity<Void> getRoot() {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * すべての書籍情報を取得します。
+     *
+     * @return 書籍のDTOを含むリスト
+     */
     @GetMapping("/v1/books")
     @ResponseStatus(HttpStatus.OK)
     public BookListDto getBooks() {
@@ -51,6 +64,12 @@ public class BookController {
             Integer.parseInt(book.getPrice()));
     }
 
+    /**
+     * 指定されたIDの書籍情報を取得します。 存在しない場合は404 Not Foundを返します。
+     *
+     * @param id 　書籍ID
+     * @return 書籍情報のレスポンスエンティティ
+     */
     @GetMapping("/v1/books/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookDto> getBookById(@PathVariable String id) {
@@ -59,6 +78,12 @@ public class BookController {
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * 新しい書籍情報を登録します。 登録に成功すると201 Createdとともに従業員のURIを返します。
+     *
+     * @param bookInputDto 新規書籍情報のDTO
+     * @return 作成された書籍情報のURIを含むレスポンスエンティティ
+     */
     @PostMapping("/v1/books")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> createBook(@Validated @RequestBody BookInputDto bookInputDto) {
@@ -74,13 +99,19 @@ public class BookController {
             .buildAndExpand(newBook.getId()).toUri();
     }
 
+    /**
+     * 指定されたIDの書籍情報を更新します。 更新に成功すると204 No Contentを返します。
+     *
+     * @param id            書籍ID
+     * @param bookUpdateDto 更新する書籍の情報
+     * @return レスポンスエンティティ
+     */
     @PatchMapping("/v1/books/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateBook(@PathVariable String id,
         @RequestBody @Validated BookUpdateDto bookUpdateDto) {
-        bookQueryUseCase.findById(id).ifPresent(existingBook ->
-            bookCommandUseCase.updateBook(createUpdateBook(bookUpdateDto, existingBook))
-        );
+        bookQueryUseCase.findById(id).ifPresent(existingBook -> bookCommandUseCase.updateBook(
+            createUpdateBook(bookUpdateDto, existingBook)));
         return ResponseEntity.noContent().build();
     }
 
@@ -98,6 +129,12 @@ public class BookController {
             updatePrice);
     }
 
+    /**
+     * 指定されたIDの書籍情報を削除します。 削除に成功すると204 No Contentを返します。
+     *
+     * @param id 書籍ID
+     * @return レスポンスエンティティ
+     */
     @DeleteMapping("/v1/books/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteEmployees(@PathVariable String id) {

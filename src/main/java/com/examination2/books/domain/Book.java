@@ -16,7 +16,9 @@ public class Book {
         validateStringField("Title", title);
         validateStringField("Author", author);
         validateStringField("Publisher", publisher);
-        if(!isNumeric(price) || Integer.parseInt(price) <= 0 ) throw new IllegalArgumentException("Price should be positive numeric value");
+        if (!isNumeric(price) || Integer.parseInt(price) <= 0) {
+            throw new IllegalArgumentException("Price should be positive numeric value");
+        }
 
         this.id = id;
         this.title = title;
@@ -25,11 +27,13 @@ public class Book {
         this.price = price;
     }
 
-    public static Book create(String id, String title, String author, String publisher, String price) {
+    public static Book create(String id, String title, String author, String publisher,
+        String price) {
         return new Book(id, title, author, publisher, price);
     }
 
-    public static Book createWithoutId(String title, String author, String publisher, String price) {
+    public static Book createWithoutId(String title, String author, String publisher,
+        String price) {
         return new Book(null, title, author, publisher, price);
     }
 
@@ -61,24 +65,19 @@ public class Book {
         if (!(o instanceof Book book)) {
             return false;
         }
-        return Objects.equals(id, book.id) && Objects.equals(title, book.title)
-            && Objects.equals(author, book.author) && Objects.equals(publisher,
-            book.publisher) && Objects.equals(price, book.price);
+        return Objects.equals(id, book.id) && Objects.equals(title, book.title) && Objects.equals(
+            author, book.author) && Objects.equals(publisher, book.publisher) && Objects.equals(
+            price, book.price);
     }
-
 
     @Override
     public int hashCode() {
         return Objects.hash(id, title, author, publisher, price);
     }
+
     @Override
     public String toString() {
-        return "Book{" +
-            "id='" + id + '\'' +
-            ", title='" + title + '\'' +
-            ", author='" + author + '\'' +
-            ", publisher='" + publisher + '\'' +
-            ", price='" + price + '\'' +
-            '}';
+        return "Book{" + "id='" + id + '\'' + ", title='" + title + '\'' + ", author='" + author
+            + '\'' + ", publisher='" + publisher + '\'' + ", price='" + price + '\'' + '}';
     }
 }

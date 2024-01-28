@@ -39,11 +39,8 @@ public class BookGlobalExceptionHandler {
         body.put(KEY_OF_CODE, "0002");
         body.put(KEY_OF_MESSAGE, "request validation error is occurred.");
 
-        List<String> details = e.getBindingResult()
-            .getFieldErrors()
-            .stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .toList();
+        List<String> details = e.getBindingResult().getFieldErrors().stream()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage).toList();
         body.put(KEY_OF_DETAILS, details);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
