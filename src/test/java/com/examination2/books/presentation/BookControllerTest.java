@@ -2,12 +2,10 @@ package com.examination2.books.presentation;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.contains;
 
-import com.examination2.books.domain.Book;
-import com.examination2.books.presentation.dto.BookDto;
+import org.springframework.boot.test.context.SpringBootTest;
+import static org.hamcrest.Matchers.is;
+
 import com.examination2.books.presentation.dto.BookInputDto;
 import com.examination2.books.presentation.dto.BookUpdateDto;
 import io.restassured.RestAssured;
@@ -16,14 +14,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.shaded.org.checkerframework.checker.units.qual.N;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Transactional
@@ -37,6 +33,15 @@ public class BookControllerTest {
         RestAssured.port = port;
     }
 
+    @Test
+    void ルートURLのアクセスを受け付ける() throws Exception {
+        given()
+            .when()
+            .get("/")
+            .then()
+            .statusCode(HttpStatus.OK.value());
+    }
+    
     @Nested
     class 参照 {
         @Test
