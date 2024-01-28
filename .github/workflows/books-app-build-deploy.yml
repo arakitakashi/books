@@ -17,13 +17,16 @@ jobs:
           java-version: '17'
 
       - name: Build with maven
-        run: mvn -B package -Dmaven.test.skip=true
+        run: mvn -B clean package -Dmaven.test.skip=true
+
+      - name: Build Docker image
+        run: docker build -t book-image .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: spring-boot-app
-          path: target/*.jar
+          name: docker-image
+          path: .
 
   deploy:
     needs: build
@@ -32,7 +35,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: spring-boot-app
+          name: docker-image
 
       - name: Deploy to Render
         uses: ttskch/render-deploy@v1.0.0
@@ -41,4 +44,5 @@ jobs:
           service-id: ${{ secrets.RENDER_SERVICE_ID }}
           interval: 20
           timeout: 300
+          docker-image: book-image
 
