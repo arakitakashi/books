@@ -13,8 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-@DirtiesContext(classMode= ClassMode.BEFORE_CLASS)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class BookCommandUseCaseTest {
+
     @Autowired
     BookCommandUseCase sut;
 

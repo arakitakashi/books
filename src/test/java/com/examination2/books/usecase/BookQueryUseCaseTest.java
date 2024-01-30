@@ -1,5 +1,7 @@
 package com.examination2.books.usecase;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.examination2.books.domain.book.Book;
 import com.examination2.books.domain.book.BookRepository;
 import java.util.List;
@@ -8,10 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest
 class BookQueryUseCaseTest {
+
     @Autowired
     BookQueryUseCase sut;
 

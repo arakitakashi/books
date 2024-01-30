@@ -2,8 +2,6 @@ package com.examination2.books.presentation;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
-
-import org.springframework.boot.test.context.SpringBootTest;
 import static org.hamcrest.Matchers.is;
 
 import com.examination2.books.presentation.dto.BookInputDto;
@@ -14,6 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class BookControllerTest {
+
     @LocalServerPort
     private int port;
 
@@ -42,8 +42,24 @@ class BookControllerTest {
             .statusCode(HttpStatus.OK.value());
     }
 
+    @Test
+    void 指定したIDの書籍情報が存在しない場合エラーを返す() {
+        // setup
+        String invalidBookId = "99";
+
+        // assert
+        given()
+            .when()
+            .get("/v1/books/{id}", invalidBookId)
+            .then()
+            .statusCode(400)
+            .assertThat()
+            .body("message", is("specified book [id = " + invalidBookId + "] is not found."));
+    }
+
     @Nested
     class 参照 {
+
         @Test
         void 全ての書籍情報を取得する() throws Exception {
             // assert
@@ -100,9 +116,11 @@ class BookControllerTest {
 
     @Nested
     class 新規登録 {
+
         @Test
         void 指定した書籍情報を登録する() throws Exception {
-            BookInputDto bookInputDto = new BookInputDto("達人プログラマー", "David Thomas", "オーム社", "3000");
+            BookInputDto bookInputDto =
+                new BookInputDto("達人プログラマー", "David Thomas", "オーム社", "3000");
 
             given()
                 .contentType("application/json")
@@ -115,16 +133,17 @@ class BookControllerTest {
         }
 
         @ParameterizedTest(name = "{5}の場合")
-        @CsvSource(delimiter = '|', textBlock= """
-        # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                      | TESTNAME
-              ''     | Kent Beck | オーム社    | 3080 | Title must not be blank      |  タイトルが空文字 
-         テスト駆動開発 | ''        | オーム社   | 3080 | Author must not be blank      |  著者が空文字
-         テスト駆動開発 | Kent Beck | ''        | 3080 | Publisher must not be blank  |  出版社が空文字
-         テスト駆動開発 | Kent Beck | オーム社   | -100 | Price must be a numeric value | 価格がマイナス 
-         テスト駆動開発 | Kent Beck | オーム社   | ABCD | Price must be a numeric value | 価格が数字ではない 
-            """)
+        @CsvSource(delimiter = '|', textBlock = """
+            # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                      | TESTNAME
+                  ''     | Kent Beck | オーム社    | 3080 | Title must not be blank      |  タイトルが空文字 
+             テスト駆動開発 | ''        | オーム社   | 3080 | Author must not be blank      |  著者が空文字
+             テスト駆動開発 | Kent Beck | ''        | 3080 | Publisher must not be blank  |  出版社が空文字
+             テスト駆動開発 | Kent Beck | オーム社   | -100 | Price must be a numeric value | 価格がマイナス 
+             テスト駆動開発 | Kent Beck | オーム社   | ABCD | Price must be a numeric value | 価格が数字ではない 
+                """)
         void 指定した書籍情報が不正の場合エラーを返す(
-            String title, String author, String publisher, String price, String message, String testName
+            String title, String author, String publisher, String price, String message,
+            String testName
         ) throws Exception {
             BookInputDto bookInputDto = new BookInputDto(title, author, publisher, price);
             given()
@@ -140,9 +159,11 @@ class BookControllerTest {
 
     @Nested
     class 更新 {
+
         @Test
-            void 指定したIDの書籍情報を更新する() throws Exception {
-            BookUpdateDto bookUpdateDto = new BookUpdateDto("テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
+        void 指定したIDの書籍情報を更新する() throws Exception {
+            BookUpdateDto bookUpdateDto =
+                new BookUpdateDto("テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
             given()
                 .contentType("application/json")
                 .body(bookUpdateDto)
@@ -153,14 +174,14 @@ class BookControllerTest {
         }
 
         @ParameterizedTest(name = "{5}の場合")
-        @CsvSource(delimiter = '|', textBlock= """
-        # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                      | TESTNAME
-              ''     | Kent Beck | オーム社    | 3080 | Title must not blank          |  タイトルが空文字 
-         テスト駆動開発 | ''        | オーム社   | 3080 | Author must not blank         |  著者が空文字
-         テスト駆動開発 | Kent Beck | ''        | 3080 | Publisher must not blank      |  出版社が空文字
-         テスト駆動開発 | Kent Beck | オーム社   | -100 | Price must be a numeric value | 価格がマイナス 
-         テスト駆動開発 | Kent Beck | オーム社   | ABCD | Price must be a numeric value | 価格が数字ではない 
-            """)
+        @CsvSource(delimiter = '|', textBlock = """
+            # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                      | TESTNAME
+                  ''     | Kent Beck | オーム社    | 3080 | Title must not blank          |  タイトルが空文字 
+             テスト駆動開発 | ''        | オーム社   | 3080 | Author must not blank         |  著者が空文字
+             テスト駆動開発 | Kent Beck | ''        | 3080 | Publisher must not blank      |  出版社が空文字
+             テスト駆動開発 | Kent Beck | オーム社   | -100 | Price must be a numeric value | 価格がマイナス 
+             テスト駆動開発 | Kent Beck | オーム社   | ABCD | Price must be a numeric value | 価格が数字ではない 
+                """)
         void 指定した書籍情報が不正の場合エラーを返す(
             String title,
             String author,
@@ -183,6 +204,7 @@ class BookControllerTest {
 
     @Nested
     class 削除 {
+
         @Test
         void 指定したIDの書籍情報を削除する() {
             given()
@@ -190,20 +212,5 @@ class BookControllerTest {
                 .then()
                 .statusCode(HttpStatus.NO_CONTENT.value());
         }
-    }
-
-    @Test
-    void 指定したIDの書籍情報が存在しない場合エラーを返す() {
-        // setup
-        String invalidBookId = "99";
-
-        // assert
-        given()
-            .when()
-            .get("/v1/books/{id}", invalidBookId)
-            .then()
-            .statusCode(400)
-            .assertThat()
-            .body("message", is("specified book [id = " + invalidBookId + "] is not found."));
     }
 }

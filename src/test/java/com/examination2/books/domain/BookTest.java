@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class BookTest {
+
     @ParameterizedTest(name = "{5}の場合")
     @CsvSource(delimiter = '|', textBlock = """
         # TITLE      | AUTHOR    | PUBLISHER | PRICE | MESSAGE                                           | TESTNAME

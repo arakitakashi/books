@@ -32,6 +32,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequiredArgsConstructor
 @RestController
 public class BookController {
+
     private final BookQueryUseCase bookQueryUseCase;
     private final BookCommandUseCase bookCommandUseCase;
 
@@ -61,7 +62,7 @@ public class BookController {
 
     private BookDto convertToDto(Book book) {
         return new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getPublisher(),
-            Integer.parseInt(book.getPrice()));
+            book.getPrice());
     }
 
     /**
@@ -118,12 +119,17 @@ public class BookController {
     private Book createUpdateBook(BookUpdateDto bookUpdateDto, Book existingBook) {
         String updateTitle =
             !isNull(bookUpdateDto.title()) ? bookUpdateDto.title() : existingBook.getTitle();
+
         String updateAuthor =
             !isNull(bookUpdateDto.author()) ? bookUpdateDto.author() : existingBook.getAuthor();
+
         String updatePublisher = !isNull(bookUpdateDto.publisher()) ? bookUpdateDto.publisher()
             : existingBook.getPublisher();
+
         String updatePrice =
-            !isNull(bookUpdateDto.price()) ? bookUpdateDto.price() : existingBook.getPrice();
+            !isNull(bookUpdateDto.price())
+                ? bookUpdateDto.price()
+                : String.valueOf(existingBook.getPrice());
 
         return Book.create(existingBook.getId(), updateTitle, updateAuthor, updatePublisher,
             updatePrice);

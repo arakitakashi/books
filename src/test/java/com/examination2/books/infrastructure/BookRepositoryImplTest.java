@@ -1,5 +1,8 @@
 package com.examination2.books.infrastructure;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.examination2.books.domain.book.Book;
 import com.examination2.books.domain.book.BookRepository;
 import com.examination2.books.domain.exception.BookNotFoundException;
@@ -11,11 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.assertj.core.api.Assertions.*;
-
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class BookRepositoryImplTest {
+
     @Autowired
     BookRepository sut;
 
@@ -38,6 +40,7 @@ class BookRepositoryImplTest {
 
     @Nested
     class 単体取得 {
+
         @Test
         void 指定したIDの書籍情報を取得する() {
             // setup
@@ -64,12 +67,14 @@ class BookRepositoryImplTest {
 
     @Nested
     class 新規登録 {
+
         @Test
         void 指定した書籍情報を新規登録する() {
             // setup
             Book newBook = Book.createWithoutId("達人プログラマー", "David Thomas", "オーム社", "4000");
 
-            Optional<Book> expected = Optional.of(Book.create("5", "達人プログラマー", "David Thomas", "オーム社", "4000"));
+            Optional<Book> expected =
+                Optional.of(Book.create("5", "達人プログラマー", "David Thomas", "オーム社", "4000"));
 
             // execute
             sut.register(newBook);
@@ -83,10 +88,12 @@ class BookRepositoryImplTest {
 
     @Nested
     class 更新 {
+
         @Test
         void 指定した書籍情報を更新する() {
             // setup
-            Optional<Book> expected = Optional.of(Book.create("1", "テスト駆動開発第２版", "Kent Beck", "オーム社", "3080"));
+            Optional<Book> expected =
+                Optional.of(Book.create("1", "テスト駆動開発第２版", "Kent Beck", "オーム社", "3080"));
             Book book = Book.create("1", "テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
 
             // execute
@@ -100,7 +107,8 @@ class BookRepositoryImplTest {
         @Test
         void 指定IDの書籍情報が存在しない場合例外を返す() {
             // setup
-            Book book = Book.create("99", "invalidBook", "invalidAuthor", "invalidPublisher", "9999");
+            Book book =
+                Book.create("99", "invalidBook", "invalidAuthor", "invalidPublisher", "9999");
 
             // assert
             assertThatThrownBy(() -> sut.update(book))
@@ -111,6 +119,7 @@ class BookRepositoryImplTest {
 
     @Nested
     class 削除 {
+
         @Test
         void 指定したIDの書籍情報を削除する() {
             // setup

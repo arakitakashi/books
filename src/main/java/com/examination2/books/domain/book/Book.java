@@ -9,11 +9,12 @@ import java.util.Objects;
  * 書籍エンティティを表すクラス。 書籍の基本情報であるタイトル、著者、出版社、価格、IDを保持します。
  */
 public class Book {
+
     private final String id;
     private final String title;
     private final String author;
     private final String publisher;
-    private final String price;
+    private final int price;
 
     private Book(String id, String title, String author, String publisher, String price) {
         validateStringField("Title", title);
@@ -27,16 +28,17 @@ public class Book {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
-        this.price = price;
+        this.price = Integer.parseInt(price);
     }
 
     /**
      * 書籍インスタンスをIDを含む形で生成します。
-     * @param id 書籍ID
-     * @param title タイトル
-     * @param author 著者
+     *
+     * @param id        書籍ID
+     * @param title     タイトル
+     * @param author    著者
      * @param publisher 出版社
-     * @param price 価格
+     * @param price     価格
      * @return 新しい書籍インスタンス
      */
     public static Book create(String id, String title, String author, String publisher,
@@ -46,10 +48,11 @@ public class Book {
 
     /**
      * 書籍インスタンスをIDを含まない形で生成します。
-     * @param title タイトル
-     * @param author 著者
+     *
+     * @param title     タイトル
+     * @param author    著者
      * @param publisher 出版社
-     * @param price 価格
+     * @param price     価格
      * @return 新しい書籍インスタンス
      */
     public static Book createWithoutId(String title, String author, String publisher,
@@ -95,9 +98,10 @@ public class Book {
 
     /**
      * 書籍の価格を取得します。
+     *
      * @return 価格
      */
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 

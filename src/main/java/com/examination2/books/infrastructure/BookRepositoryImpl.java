@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
+
     private static final String DATABASE_ACCESS_ERROR_MESSAGE = "Database Access Error";
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -68,20 +69,23 @@ public class BookRepositoryImpl implements BookRepository {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("checkstyle:Indentation")
     @Override
     public Book register(Book book) {
         String sequenceQuery = "SELECT nextval('BOOK_ID_SEQ')";
         Integer id = jdbcTemplate.queryForObject(sequenceQuery, new HashMap<>(), Integer.class);
 
-        String query =
-            "INSERT INTO books (id, title, author, publisher, price) VALUES (:id, :title, :author, :publisher, :price)";
+        String query = """
+            INSERT INTO books (id, title, author, publisher, price) 
+            VALUES (:id, :title, :author, :publisher, :price)
+            """;
 
         Map<String, Object> params = createSaveParams(id, book);
 
         try {
             jdbcTemplate.update(query, params);
             return Book.create(String.valueOf(id), book.getTitle(), book.getAuthor(),
-                book.getPublisher(), book.getPrice());
+                book.getPublisher(), String.valueOf(book.getPrice()));
         } catch (DataAccessException e) {
             log.error(DATABASE_ACCESS_ERROR_MESSAGE, e);
             throw e;
@@ -94,7 +98,7 @@ public class BookRepositoryImpl implements BookRepository {
         result.put("title", book.getTitle());
         result.put("author", book.getAuthor());
         result.put("publisher", book.getPublisher());
-        result.put("price", Integer.parseInt(book.getPrice()));
+        result.put("price", book.getPrice());
         return result;
     }
 
@@ -104,8 +108,11 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     @Transactional
     public Book update(Book book) {
-        String query =
-            "UPDATE books SET title = :title, author = :author, publisher = :publisher, price = :price WHERE id = :id";
+        String query = """
+            UPDATE books 
+            SET title = :title, author = :author, publisher = :publisher, price = :price 
+            WHERE id = :id
+            """;
 
         Map<String, Object> params = createUpdateParams(book);
 
@@ -128,7 +135,7 @@ public class BookRepositoryImpl implements BookRepository {
         result.put("title", book.getTitle());
         result.put("author", book.getAuthor());
         result.put("publisher", book.getPublisher());
-        result.put("price", Integer.parseInt(book.getPrice()));
+        result.put("price", book.getPrice());
         return result;
     }
 
