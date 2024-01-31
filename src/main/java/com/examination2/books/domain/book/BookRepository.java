@@ -7,6 +7,7 @@ import java.util.Optional;
  * 書籍情報エンティティに対するリポジトリのインターフェース。 書籍情報の検索、登録、更新、削除の操作を定義します。
  */
 public interface BookRepository {
+
     /**
      * 全ての書籍情報を取得します。
      *

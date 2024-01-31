@@ -7,4 +7,5 @@ import java.util.List;
  * プレゼンテーション層で書籍情報の集合を転送する際に使用されます。
  */
 public record BookListDto(List<BookDto> books) {
+
 }
