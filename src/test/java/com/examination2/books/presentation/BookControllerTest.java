@@ -163,7 +163,7 @@ class BookControllerTest {
         @Test
         void 指定したIDの書籍情報を更新する() throws Exception {
             BookUpdateDto bookUpdateDto =
-                new BookUpdateDto("テスト駆動開発第２版", "Kent Beck", "オーム社", "3080");
+                new BookUpdateDto("テスト駆動開発第２版", "Kent Beck", null, "3080");
             given()
                 .contentType("application/json")
                 .body(bookUpdateDto)
