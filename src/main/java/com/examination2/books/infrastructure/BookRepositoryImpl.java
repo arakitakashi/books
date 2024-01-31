@@ -69,7 +69,6 @@ public class BookRepositoryImpl implements BookRepository {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("checkstyle:Indentation")
     @Override
     public Book register(Book book) {
         String sequenceQuery = "SELECT nextval('BOOK_ID_SEQ')";
